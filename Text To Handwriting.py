@@ -5,7 +5,7 @@ import os
 
 
 def clear():
-    os.system("clear")
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 # if you'd rather not use the command line, put the path to your file here
@@ -34,23 +34,25 @@ distX, distY = gapFromLeft, lineHeight
 # for each letter in the uploaded txt file, read the unicode value and replace it with
 # the corresponding handwritten file in the "myfont" folder.
 for i in txt.read():
-    clear()
-    print(i)
+    # clear()
+    # print(i)
     if i == "\n":
         distX, distY = gapFromLeft, distY + lineHeight
         continue
 
-    cases = Image.open(f"myfont/{ord(i)}.png")
-    BG.paste(cases, (distX, distY))
-    size = cases.width
-    height = cases.height
-    distX += size
+    if ord(i) >= 48 and ord(i) <= 85:
 
-    # if we've reached end of sheet or if next letter will exceed line
-    if sheet_width < distX or len(i) * 115 > (sheet_width - distX):
-        # goto next line
-        distX, distY = gapFromLeft, distY + lineHeight
+        cases = Image.open(f"./out/{ord(i)}.png")
+        BG.paste(cases, (distX, distY))
+        size = cases.width
+        height = cases.height
+        distX += size
+
+        # if we've reached end of sheet or if next letter will exceed line
+        if sheet_width < distX or len(i) * 115 > (sheet_width - distX):
+            # goto next line
+            distX, distY = gapFromLeft, distY + lineHeight
 
 # print(distX)
 # print(sheet_width)
-BG.save("./out2.png")
+BG.save("./out4.png")
